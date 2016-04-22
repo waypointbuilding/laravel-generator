@@ -26,7 +26,7 @@ class ControllerGenerator extends BaseGenerator
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathController;
         $this->templateType = config('infyom.laravel_generator.templates', 'core-templates');
-        $this->fileName = $this->commandData->modelName.'Controller.php';
+        $this->fileName = $this->commandData->modelName.$this->commandData->config->pathControllerNameSuffix.'.php';
     }
 
     public function generate()

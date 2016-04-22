@@ -22,7 +22,7 @@ class APIControllerGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathApiController;
-        $this->fileName = $this->commandData->modelName.'APIController.php';
+        $this->fileName = $this->commandData->modelName.$this->commandData->config->pathApiControllerNameSuffix.'.php';
     }
 
     public function generate()

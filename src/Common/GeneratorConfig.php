@@ -27,14 +27,18 @@ class GeneratorConfig
 
     public $pathApiController;
     public $pathApiRequest;
+    public $pathApiRequestNameSuffix;
     public $pathApiRoutes;
     public $pathApiTests;
     public $pathApiTestTraits;
+    public $pathApiControllerNameSuffix;
 
     public $pathController;
     public $pathRequest;
+    public $pathRequestNameSuffix;
     public $pathRoutes;
     public $pathViews;
+    public $pathControllerNameSuffix;
 
     /* Model Names */
     public $mName;
@@ -125,6 +129,8 @@ class GeneratorConfig
             'infyom.laravel_generator.path.api_request',
             app_path('Http/Requests/API/')
         ).$prefixTitle;
+        
+        $this->pathAPIRequestNameSuffix = config('infyom.laravel_generator.path.api_request_name_suffix', 'APIRequest');
 
         $this->pathApiRoutes = config('infyom.laravel_generator.path.api_routes', app_path('Http/api_routes.php'));
 
@@ -132,12 +138,16 @@ class GeneratorConfig
 
         $this->pathApiTestTraits = config('infyom.laravel_generator.path.test_trait', base_path('tests/traits/'));
 
+        $this->pathApiControllerNameSuffix = config('infyom.laravel_generator.path.api_controller_name_suffix', 'APIController');
+        
         $this->pathController = config(
             'infyom.laravel_generator.path.controller',
             app_path('Http/Controllers/')
         ).$prefixTitle;
 
         $this->pathRequest = config('infyom.laravel_generator.path.request', app_path('Http/Requests/')).$prefixTitle;
+        
+        $this->pathRequestNameSuffix = config('infyom.laravel_generator.path.request_name_suffix', 'APIRequest');
 
         $this->pathRoutes = config('infyom.laravel_generator.path.routes', app_path('Http/routes.php'));
 
@@ -145,6 +155,8 @@ class GeneratorConfig
             'infyom.laravel_generator.path.views',
             base_path('resources/views/')
         ).$prefix.'/'.$this->mCamelPlural.'/';
+        
+        $this->pathControllerNameSuffix = config('infyom.laravel_generator.path.controller_name_suffix', 'Controller');
     }
 
     public function loadDynamicVariables(CommandData &$commandData)
