@@ -49,7 +49,7 @@ return [
         
         'api_request_name_suffix' => 'APIRequest',
         
-        'request_name_suffix' => 'Request',
+        'request_name_suffix' => 'AdminCMSRequest',
     ],
 
     /*
