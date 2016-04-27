@@ -166,6 +166,8 @@ class GeneratorConfig
         $this->pathControllerNameSuffix = config('infyom.laravel_generator.path.controller_name_suffix', 'Controller');
         
         $this->pathModelNameSuffix = config('infyom.laravel_generator.path.model_name_suffix', '');
+        
+        $this->pathRepositorySuffix = config('infyom.laravel_generator.path.repository_name_suffix', '');
     }
 
     public function loadDynamicVariables(CommandData &$commandData)
