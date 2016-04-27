@@ -25,7 +25,7 @@ class RequestGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathRequest;
-        $this->createFileName = 'Create'.$this->commandData->modelName.'Request.php';
+        $this->createFileName = 'Create'.$this->commandData->modelName.$this->commandData->config->pathRequestNameSuffix.'.php';
         $this->updateFileName = 'Update'.$this->commandData->modelName.'Request.php';
     }
 

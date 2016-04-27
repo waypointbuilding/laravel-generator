@@ -19,7 +19,7 @@ class ModelGenerator extends BaseGenerator
     /** @var string */
     private $fileName;
 
-    /** @var Doctrine\DBAL\Schema\SchemaManager */
+    /** @var \Doctrine\DBAL\Schema\SchemaManager */
     private $schemaManager;
 
     /** @var string */
@@ -57,7 +57,7 @@ class ModelGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathModel;
-        $this->fileName = $this->commandData->modelName.'.php';
+        $this->fileName = $this->commandData->modelName.$commandData->config->pathModelNameSuffix.'.php';
         $this->table = $this->commandData->dynamicVars['$TABLE_NAME$'];
         $this->getSchemaManager();
         $this->getTables();
