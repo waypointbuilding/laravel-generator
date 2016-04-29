@@ -50,7 +50,6 @@ class ModelGenerator extends BaseGenerator
 
     /**
      * ModelGenerator constructor.
-     *
      * @param \InfyOm\Generator\Common\CommandData $commandData
      */
     public function __construct(CommandData $commandData)
@@ -103,14 +102,16 @@ class ModelGenerator extends BaseGenerator
 
         $templateData = str_replace('$PRIMARY$', $primary, $templateData);
 
-        $templateData = str_replace('$FIELDS$', implode(','.infy_nl_tab(1, 2), $fillables), $templateData);
+        $templateData = str_replace('$FIELDS$', implode(','.PHP_EOL.str_repeat(' ', 8), $fillables), $templateData);
 
-        $templateData = str_replace('$RULES$', implode(','.infy_nl_tab(1, 2), $this->generateRules()), $templateData);
+        $templateData = str_replace('$RULES$', implode(','.PHP_EOL.str_repeat(' ', 8), $this->generateRules()), $templateData);
 
-        $templateData = str_replace('$CAST$', implode(','.infy_nl_tab(1, 2), $this->generateCasts()), $templateData);
+        $templateData = str_replace('$CAST$', implode(','.PHP_EOL.str_repeat(' ', 8), $this->generateCasts()), $templateData);
+
+        $templateData = str_replace('$FUNCTIONS$', implode(','.PHP_EOL.str_repeat(' ', 8), $this->generateCasts()), $templateData);
 
         $templateData = str_replace(
-            '$ELOQUENTFUNCTIONS$', implode(PHP_EOL.infy_nl_tab(1, 1), $this->generateEloquent()), $templateData
+            '$ELOQUENTFUNCTIONS$', implode(PHP_EOL.PHP_EOL.str_repeat(' ', 8), $this->generateEloquent()), $templateData
         );
         $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
 
