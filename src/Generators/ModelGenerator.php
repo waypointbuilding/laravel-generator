@@ -113,6 +113,7 @@ class ModelGenerator extends BaseGenerator
         $templateData = str_replace(
             '$ELOQUENTFUNCTIONS$', implode(PHP_EOL.PHP_EOL.str_repeat(' ', 8), $this->generateEloquent()), $templateData
         );
+        
         $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
 
         return $templateData;
@@ -333,12 +334,23 @@ class ModelGenerator extends BaseGenerator
      */
     private function generateEloquent()
     {
-        return array_merge(
+        $return_me =  array_merge(
             $this->generateBelongsToFunctions($this->eloquentRules[$this->table]['belongsTo']),
             $this->generateBelongsToManyFunctions($this->eloquentRules[$this->table]['belongsToMany']),
             $this->generateHasManyFunctions($this->eloquentRules[$this->table]['hasMany']),
             $this->generateHasOneFunctions($this->eloquentRules[$this->table]['hasOne'])
         );
+
+        $templateData = TemplateUtil::getTemplate('models.softDeleteCascade', 'laravel-generator');
+
+        $templateData = str_replace(
+            '$MODEL_NAME$', $this->commandData->dynamicVars['$MODEL_NAME$'], $templateData
+        );
+        $templateData = str_replace(
+            '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
+        );
+        $return_me[] = $templateData;
+        return $return_me;
     }
 
     private function getColumnsPrimaryAndForeignKeysPerTable()
@@ -400,7 +412,7 @@ class ModelGenerator extends BaseGenerator
         $functionArr = [];
         foreach ($rulesContainerArr as $rulesContainerRule) {
             $hasOneModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
-            $hasOneFunctionName = $this->getSingularFunctionName($hasOneModel);
+            $hasOneFunctionName = $this->getPluralFunctionName($hasOneModel);
             $templateData = TemplateUtil::getTemplate('models.hasOne', 'laravel-generator');
 
             $templateData = str_replace('$FUNCTIONNAME$', $hasOneFunctionName, $templateData);
@@ -413,6 +425,47 @@ class ModelGenerator extends BaseGenerator
             $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
 
             $functionArr[] = $templateData;
+        }
+        /**
+         * hasOneSoftDeleteCascade.stub
+         */
+        if (!$this->commandData->getOption('softDelete_cascade')) {
+            $templateData = TemplateUtil::getTemplate('models.hasOneSoftDeleteCascade', 'laravel-generator');
+            $templateData = str_replace(
+                '$MODEL_NAME$', $this->commandData->dynamicVars['$MODEL_NAME$'], $templateData
+            );
+            $templateData = str_replace(
+                '$NAMESPACE_MODEL$', $this->commandData->dynamicVars['$NAMESPACE_MODEL$'], $templateData
+            );
+            $templateData = str_replace(
+                '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
+            );
+            $templateData = str_replace(
+                '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
+            );
+            $functionHasOneArr = [];
+            foreach ($rulesContainerArr as $rulesContainerRule) {
+                $hasOneModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
+                $hasOneFunctionName = $this->getPluralFunctionName($hasOneModel);
+                $hasOneObjectName = $this->getSingularFunctionName($hasOneModel);
+                $templateDataFunction = TemplateUtil::getTemplate('models.hasOneSoftDeleteCascadeFunction', 'laravel-generator');
+                $templateDataFunction = str_replace('$MODEL_NAME$', $hasOneModel, $templateDataFunction);
+                $templateDataFunction = str_replace(
+                    '$HAS_MANY_FUNCTION_NAME$', $hasOneFunctionName, $templateDataFunction
+                );
+                $templateDataFunction = str_replace(
+                    '$HAS_MANY_OBJECT_NAME$', lcfirst($hasOneObjectName), $templateDataFunction
+                );
+                $templateDataFunction = str_replace(
+                    '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateDataFunction
+                );
+                $functionHasOneArr[] = $templateDataFunction;
+            }
+            $templateData = str_replace(
+                '$HASONESOFTDELETEAASCADEFUNCTIONS$', implode(PHP_EOL.PHP_EOL.str_repeat(' ', 8), $functionHasOneArr), $templateData
+            );
+            $functionArr[] = $templateData;
+
         }
 
         return $functionArr;
@@ -442,7 +495,47 @@ class ModelGenerator extends BaseGenerator
 
             $functionArr[] = $templateData;
         }
-
+        /**
+         * hasManySoftDeleteCascade.stub
+         */
+        if (!$this->commandData->getOption('softDelete_cascade')) {
+            $templateData = TemplateUtil::getTemplate('models.hasManySoftDeleteCascade', 'laravel-generator');
+            $templateData = str_replace(
+                '$MODEL_NAME$', $this->commandData->dynamicVars['$MODEL_NAME$'], $templateData
+            );
+            $templateData = str_replace(
+                '$NAMESPACE_MODEL$', $this->commandData->dynamicVars['$NAMESPACE_MODEL$'], $templateData
+            );
+            $templateData = str_replace(
+                '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
+            );
+            $templateData = str_replace(
+                '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
+            );
+            $functionHasManyArr = [];
+            foreach ($rulesContainerArr as $rulesContainerRule) {
+                $hasManyModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
+                $hasManyFunctionName = $this->getPluralFunctionName($hasManyModel);
+                $hasManyObjectName = $this->getSingularFunctionName($hasManyModel);
+                $templateDataFunction = TemplateUtil::getTemplate('models.hasManySoftDeleteCascadeFunction', 'laravel-generator');
+                $templateDataFunction = str_replace('$MODEL_NAME$', $hasManyModel, $templateDataFunction);
+                $templateDataFunction = str_replace(
+                    '$HAS_MANY_FUNCTION_NAME$', $hasManyFunctionName, $templateDataFunction
+                );
+                $templateDataFunction = str_replace(
+                    '$HAS_MANY_OBJECT_NAME$', lcfirst($hasManyObjectName), $templateDataFunction
+                );
+                $templateDataFunction = str_replace(
+                    '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateDataFunction
+                );
+                $functionHasManyArr[] = $templateDataFunction;
+            }
+            $templateData = str_replace(
+                '$HASMANYSOFTDELETEAASCADEFUNCTIONS$', implode(PHP_EOL.PHP_EOL.str_repeat(' ', 8), $functionHasManyArr), $templateData
+            );
+            $functionArr[] = $templateData;
+            
+        }
         return $functionArr;
     }
 

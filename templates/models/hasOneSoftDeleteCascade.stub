@@ -1,0 +1,8 @@
+/**
+     * @param \$NAMESPACE_MODEL$\$MODELNAME$::class, $$MODEL_NAME_CAMEL$
+     * @throws \Exception
+     */
+    public static function deleteHasOne(\$NAMESPACE_MODEL$\$MODELNAME$ $$MODEL_NAME_CAMEL$)
+    {
+        $HASONESOFTDELETEAASCADEFUNCTIONS$
+    }

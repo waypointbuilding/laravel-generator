@@ -115,6 +115,8 @@ return [
     'options' => [
 
         'softDelete' => true,
+        
+        'softDelete_cascade' => true,
 
         'tables_searchable_default' => false,
     ],
