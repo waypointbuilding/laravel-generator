@@ -419,7 +419,7 @@ class ModelGenerator extends BaseGenerator
             $templateData = str_replace(
                 '$NAMESPACE_MODEL$', $this->commandData->dynamicVars['$NAMESPACE_MODEL$'], $templateData
             );
-            $templateData = str_replace('$MODELNAME$', $hasOneModel, $templateData);
+            $templateData = str_replace('$MODEL_NAME$', $hasOneModel, $templateData);
             $templateData = str_replace('$KEY1$', $rulesContainerRule[1], $templateData);
             $templateData = str_replace('$KEY2$', $rulesContainerRule[2], $templateData);
             $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
@@ -488,7 +488,7 @@ class ModelGenerator extends BaseGenerator
             $templateData = str_replace(
                 '$NAMESPACE_MODEL$', $this->commandData->dynamicVars['$NAMESPACE_MODEL$'], $templateData
             );
-            $templateData = str_replace('$MODELNAME$', $hasManyModel, $templateData);
+            $templateData = str_replace('$MODEL_NAME$', $hasManyModel, $templateData);
             $templateData = str_replace('$KEY1$', $rulesContainerRule[1], $templateData);
             $templateData = str_replace('$KEY2$', $rulesContainerRule[2], $templateData);
             $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
@@ -509,16 +509,13 @@ class ModelGenerator extends BaseGenerator
             $templateData = str_replace(
                 '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
             );
-            $templateData = str_replace(
-                '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateData
-            );
             $functionHasManyArr = [];
             foreach ($rulesContainerArr as $rulesContainerRule) {
                 $hasManyModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
                 $hasManyFunctionName = $this->getPluralFunctionName($hasManyModel);
                 $hasManyObjectName = $this->getSingularFunctionName($hasManyModel);
                 $templateDataFunction = TemplateUtil::getTemplate('models.hasManySoftDeleteCascadeFunction', 'laravel-generator');
-                $templateDataFunction = str_replace('$MODEL_NAME$', $hasManyModel, $templateDataFunction);
+                $templateDataFunction = str_replace('$HAS_MANY_MODEL_NAME$', $hasManyModel, $templateDataFunction);
                 $templateDataFunction = str_replace(
                     '$HAS_MANY_FUNCTION_NAME$', $hasManyFunctionName, $templateDataFunction
                 );
@@ -528,13 +525,15 @@ class ModelGenerator extends BaseGenerator
                 $templateDataFunction = str_replace(
                     '$MODEL_NAME_CAMEL$', $this->commandData->dynamicVars['$MODEL_NAME_CAMEL$'], $templateDataFunction
                 );
+                $templateDataFunction = str_replace(
+                    '$MODEL_NAME$', $this->commandData->dynamicVars['$MODEL_NAME$'], $templateDataFunction
+                );
                 $functionHasManyArr[] = $templateDataFunction;
             }
             $templateData = str_replace(
                 '$HASMANYSOFTDELETEAASCADEFUNCTIONS$', implode(PHP_EOL.PHP_EOL.str_repeat(' ', 8), $functionHasManyArr), $templateData
             );
             $functionArr[] = $templateData;
-            
         }
         return $functionArr;
     }
@@ -556,7 +555,7 @@ class ModelGenerator extends BaseGenerator
             $templateData = str_replace(
                 '$NAMESPACE_MODEL$', $this->commandData->dynamicVars['$NAMESPACE_MODEL$'], $templateData
             );
-            $templateData = str_replace('$MODELNAME$', $belongsToModel, $templateData);
+            $templateData = str_replace('$MODEL_NAME$', $belongsToModel, $templateData);
             $templateData = str_replace('$KEY1$', $rulesContainerRule[1], $templateData);
             $templateData = str_replace('$KEY2$', $rulesContainerRule[2], $templateData);
             $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
@@ -584,7 +583,7 @@ class ModelGenerator extends BaseGenerator
             $templateData = str_replace(
                 '$NAMESPACE_MODEL$', $this->commandData->dynamicVars['$NAMESPACE_MODEL$'], $templateData
             );
-            $templateData = str_replace('$MODELNAME$', $belongsToManyModel, $templateData);
+            $templateData = str_replace('$MODEL_NAME$', $belongsToManyModel, $templateData);
             $templateData = str_replace('$THROUGH$', $rulesContainerRule[1], $templateData);
             $templateData = str_replace('$KEY1$', $rulesContainerRule[2], $templateData);
             $templateData = str_replace('$KEY2$', $rulesContainerRule[3], $templateData);
