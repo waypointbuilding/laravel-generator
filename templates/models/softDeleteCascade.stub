@@ -1,0 +1,12 @@
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(
+            function ($MODEL_NAME$ $$MODEL_NAME_CAMEL$)
+            {
+                self::deleteHasMany($$MODEL_NAME_CAMEL$);
+                self::deleteHasOne($$MODEL_NAME_CAMEL$);
+            }
+        );
+    }

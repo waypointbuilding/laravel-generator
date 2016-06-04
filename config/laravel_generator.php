@@ -42,6 +42,14 @@ return [
         'schema_files'      => base_path('resources/model_schemas/'),
 
         'templates_dir'     => base_path('resources/infyom/infyom-generator-templates/'),
+        
+        'api_controller_name_suffix' => 'APIController',
+        
+        'controller_name_suffix' => 'Controller',
+        
+        'api_request_name_suffix' => 'APIRequest',
+        
+        'request_name_suffix' => 'AdminCMSRequest',
     ],
 
     /*
@@ -107,6 +115,8 @@ return [
     'options' => [
 
         'softDelete' => true,
+        
+        'softDelete_cascade' => true,
 
         'tables_searchable_default' => false,
     ],

@@ -27,14 +27,18 @@ class GeneratorConfig
 
     public $pathApiController;
     public $pathApiRequest;
+    public $pathApiRequestNameSuffix;
     public $pathApiRoutes;
     public $pathApiTests;
     public $pathApiTestTraits;
+    public $pathApiControllerNameSuffix;
 
     public $pathController;
     public $pathRequest;
+    public $pathRequestNameSuffix;
     public $pathRoutes;
     public $pathViews;
+    public $pathControllerNameSuffix;
 
     /* Model Names */
     public $mName;
@@ -50,7 +54,7 @@ class GeneratorConfig
     public $options;
 
     /* Command Options */
-    public static $availableOptions = ['fieldsFile', 'jsonFromGUI', 'tableName', 'fromTable', 'save', 'primary', 'prefix', 'paginate', 'skipDumpOptimized'];
+    public static $availableOptions = ['fieldsFile', 'jsonFromGUI', 'tableName', 'fromTable', 'save', 'primary', 'prefix', 'prefix_mixed_case', 'paginate', 'skipDumpOptimized'];
 
     public $tableName;
 
@@ -70,17 +74,20 @@ class GeneratorConfig
     }
 
     public function loadNamespaces(CommandData &$commandData)
-    {
-        $prefix = $this->getOption('prefix');
-
-        if (!empty($prefix)) {
-            $prefix = '\\'.Str::title($prefix);
+    {        
+        if($this->getOption('prefix_mixed_case')) {
+            $prefixTitle = '\\'.$this->getOption('prefix_mixed_case');
+        }
+        elseif (!empty($this->getOption('prefix'))) {
+            $prefixTitle = '\\'.Str::title($this->getOption('prefix'));
+        }else {
+            $prefixTitle = '';
         }
 
         $this->nsApp = $commandData->commandObj->getLaravel()->getNamespace();
-        $this->nsRepository = config('infyom.laravel_generator.namespace.repository', 'App\Repositories').$prefix;
-        $this->nsModel = config('infyom.laravel_generator.namespace.model', 'App\Models').$prefix;
-        $this->nsDataTables = config('infyom.laravel_generator.namespace.datatables', 'App\DataTables').$prefix;
+        $this->nsRepository = config('infyom.laravel_generator.namespace.repository', 'App\Repositories').$prefixTitle;
+        $this->nsModel = config('infyom.laravel_generator.namespace.model', 'App\Models').$prefixTitle;
+        $this->nsDataTables = config('infyom.laravel_generator.namespace.datatables', 'App\DataTables').$prefixTitle;
         $this->nsModelExtend = config(
             'infyom.laravel_generator.model_extend_class',
             'Illuminate\Database\Eloquent\Model'
@@ -89,19 +96,21 @@ class GeneratorConfig
         $this->nsApiController = config(
             'infyom.laravel_generator.namespace.api_controller',
             'App\Http\Controllers\API'
-        ).$prefix;
-        $this->nsApiRequest = config('infyom.laravel_generator.namespace.api_request', 'App\Http\Requests\API').$prefix;
+        ).$prefixTitle;
+        $this->nsApiRequest = config('infyom.laravel_generator.namespace.api_request', 'App\Http\Requests\API').$prefixTitle;
 
-        $this->nsRequest = config('infyom.laravel_generator.namespace.request', 'App\Http\Requests').$prefix;
+        $this->nsRequest = config('infyom.laravel_generator.namespace.request', 'App\Http\Requests').$prefixTitle;
         $this->nsRequestBase = config('infyom.laravel_generator.namespace.request', 'App\Http\Requests');
-        $this->nsController = config('infyom.laravel_generator.namespace.controller', 'App\Http\Controllers').$prefix;
+        $this->nsController = config('infyom.laravel_generator.namespace.controller', 'App\Http\Controllers').$prefixTitle;
     }
 
     public function loadPaths()
     {
         $prefix = $this->getOption('prefix');
 
-        if (!empty($prefix)) {
+        if($this->getOption('prefix_mixed_case')) {
+            $prefixTitle = $this->getOption('prefix_mixed_case').'/';
+        } else if (!empty($prefix)) {
             $prefixTitle = Str::title($prefix).'/';
         } else {
             $prefixTitle = '';
@@ -125,6 +134,8 @@ class GeneratorConfig
             'infyom.laravel_generator.path.api_request',
             app_path('Http/Requests/API/')
         ).$prefixTitle;
+        
+        $this->pathApiRequestNameSuffix = config('infyom.laravel_generator.path.api_request_name_suffix', 'APIRequest');
 
         $this->pathApiRoutes = config('infyom.laravel_generator.path.api_routes', app_path('Http/api_routes.php'));
 
@@ -132,12 +143,16 @@ class GeneratorConfig
 
         $this->pathApiTestTraits = config('infyom.laravel_generator.path.test_trait', base_path('tests/traits/'));
 
+        $this->pathApiControllerNameSuffix = config('infyom.laravel_generator.path.api_controller_name_suffix', 'APIController');
+        
         $this->pathController = config(
             'infyom.laravel_generator.path.controller',
             app_path('Http/Controllers/')
         ).$prefixTitle;
 
         $this->pathRequest = config('infyom.laravel_generator.path.request', app_path('Http/Requests/')).$prefixTitle;
+        
+        $this->pathRequestNameSuffix = config('infyom.laravel_generator.path.request_name_suffix', 'Request');
 
         $this->pathRoutes = config('infyom.laravel_generator.path.routes', app_path('Http/routes.php'));
 
@@ -145,6 +160,8 @@ class GeneratorConfig
             'infyom.laravel_generator.path.views',
             base_path('resources/views/')
         ).$prefix.'/'.$this->mCamelPlural.'/';
+        
+        $this->pathControllerNameSuffix = config('infyom.laravel_generator.path.controller_name_suffix', 'Controller');
     }
 
     public function loadDynamicVariables(CommandData &$commandData)
@@ -176,7 +193,13 @@ class GeneratorConfig
 
         if ($this->getOption('prefix')) {
             $prefixRoutes = $this->getOption('prefix').'/';
-            $prefixTitle = Str::title($this->getOption('prefix')).'\\';
+            if($this->getOption('prefix_mixed_case'))
+            {
+                $prefixTitle = $this->getOption('prefix_mixed_case').'\\';
+            }
+            else{
+                $prefixTitle = Str::title($this->getOption('prefix')).'\\';
+            }
             $prefixAs = $this->getOption('prefix').'.';
         } else {
             $prefixRoutes = '';

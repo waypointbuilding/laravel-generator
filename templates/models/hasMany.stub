@@ -4,7 +4,7 @@
      **/
     public function $FUNCTIONNAME$() {
         return $this->hasMany(
-            \$NAMESPACE_MODEL$\$MODELNAME$::class,
+            \$NAMESPACE_MODEL$\$MODEL_NAME$::class,
             '$KEY1$',
             '$KEY2$'
         );

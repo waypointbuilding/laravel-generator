@@ -123,6 +123,7 @@ class BaseCommand extends Command
             ['save', null, InputOption::VALUE_NONE, 'Save model schema to file'],
             ['primary', null, InputOption::VALUE_REQUIRED, 'Custom primary key'],
             ['prefix', null, InputOption::VALUE_REQUIRED, 'Prefix for all files'],
+            ['prefix_mixed_case', null, InputOption::VALUE_OPTIONAL, 'mixed case prefix'],
             ['paginate', null, InputOption::VALUE_REQUIRED, 'Pagination for index.blade.php'],
             ['skipDumpOptimized', null, InputOption::VALUE_NONE, 'Skip Composer dump autoload optimized'],
         ];

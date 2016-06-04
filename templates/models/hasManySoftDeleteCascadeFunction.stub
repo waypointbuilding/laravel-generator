@@ -1,0 +1,5 @@
+
+        foreach ($$MODEL_NAME_CAMEL$->$HAS_MANY_FUNCTION_NAME$ as $$HAS_MANY_OBJECT_NAME$)
+        {
+            $$HAS_MANY_OBJECT_NAME$->delete();
+        }
