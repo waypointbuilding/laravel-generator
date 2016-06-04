@@ -1,6 +1,6 @@
 {
-    "name": "infyomlabs/laravel-generator",
-    "description": "InfyOm Laravel Generator",
+    "name": "mrfabulous/laravel-generator",
+    "description": "fork of InfyOm Laravel Generator",
     "keywords": [
         "laravel",
         "api",
