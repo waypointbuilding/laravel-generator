@@ -21,7 +21,7 @@ class RepositoryGenerator extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->path = $commandData->config->pathRepository;
-        $this->fileName = $this->commandData->modelName.'Repository.php';
+        $this->fileName = $this->commandData->modelName.$this->commandData->config->pathRepositorySuffix.'.php';
     }
 
     public function generate()

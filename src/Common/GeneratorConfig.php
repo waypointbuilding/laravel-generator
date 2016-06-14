@@ -22,6 +22,7 @@ class GeneratorConfig
 
     /* Path variables */
     public $pathRepository;
+    public $pathRepositorySuffix;
     public $pathModel;
     public $pathDataTables;
 
@@ -32,6 +33,7 @@ class GeneratorConfig
     public $pathApiTests;
     public $pathApiTestTraits;
     public $pathApiControllerNameSuffix;
+    public $pathModelNameSuffix;
 
     public $pathController;
     public $pathRequest;
@@ -162,6 +164,10 @@ class GeneratorConfig
         ).$prefix.'/'.$this->mCamelPlural.'/';
         
         $this->pathControllerNameSuffix = config('infyom.laravel_generator.path.controller_name_suffix', 'Controller');
+        
+        $this->pathModelNameSuffix = config('infyom.laravel_generator.path.model_name_suffix', '');
+        
+        $this->pathRepositorySuffix = config('infyom.laravel_generator.path.repository_name_suffix', '');
     }
 
     public function loadDynamicVariables(CommandData &$commandData)
