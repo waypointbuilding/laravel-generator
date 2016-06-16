@@ -138,22 +138,30 @@ class GeneratorConfig
     {
         $prefix = $this->prefixes['path'];
 
-        if (!empty($prefix)) {
-            $prefix .= '/';
-        }
-
-        if($this->getOption('prefix_mixed_case')) {
-            $prefix = $this->getOption('prefix_mixed_case').'/';
-        } else if (!empty($prefix)) {
-            $prefix = Str::title($prefix).'/';
-        } else {
-            $prefix = '';
+        if ( ! empty($prefix))
+        {
+            if ($this->isSkip('format_prefixes'))
+            {
+                $prefix = $prefix . '/';
+            }
+            else
+            {
+                $prefix = Str::title($prefix) . '/';
+            }
         }
 
         $viewPrefix = $this->prefixes['view'];
 
-        if (!empty($viewPrefix)) {
-            $viewPrefix .= '/';
+        if ( ! empty($viewPrefix))
+        {
+            if ($this->isSkip('format_prefixes'))
+            {
+                $viewPrefix = $viewPrefix . '/';
+            }
+            else
+            {
+                $viewPrefix = Str::title($viewPrefix) . '/';
+            }
         }
 
         $this->pathRepository = config(
@@ -182,6 +190,8 @@ class GeneratorConfig
         $this->pathApiTestTraits = config('infyom.laravel_generator.path.test_trait', base_path('tests/traits/'));
 
         $this->pathApiControllerNameSuffix = config('infyom.laravel_generator.path.api_controller_name_suffix', 'APIController');
+        
+        $this->pathApiRequestNameSuffix = config('infyom.laravel_generator.path.api_request_name_suffix', 'APIRequest');
         
         $this->pathController = config(
             'infyom.laravel_generator.path.controller',
@@ -406,7 +416,7 @@ class GeneratorConfig
         foreach ($this->prefixes['view'] as $singlePrefix) {
             if($this->isSkip('format_prefixes'))
             {
-                $viewPrefix .= Str::camel($singlePrefix).'/';
+                $viewPrefix .= $singlePrefix.'/';
             }
             else                
             {
