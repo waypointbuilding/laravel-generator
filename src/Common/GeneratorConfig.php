@@ -345,7 +345,15 @@ class GeneratorConfig
         $routePrefix = '';
 
         foreach ($this->prefixes['route'] as $singlePrefix) {
-            $routePrefix .= Str::camel($singlePrefix).'.';
+            
+            if($this->getOption('prefix_mixed_case'))
+            {
+                $routePrefix .= $singlePrefix.'.';
+            }
+            else                
+            {
+                $routePrefix .= Str::camel($singlePrefix).'.';
+            }
         }
 
         if (!empty($routePrefix)) {
@@ -357,7 +365,14 @@ class GeneratorConfig
         $nsPrefix = '';
 
         foreach ($this->prefixes['path'] as $singlePrefix) {
-            $nsPrefix .= Str::title($singlePrefix).'\\';
+            if($this->getOption('prefix_mixed_case'))
+            {
+                $nsPrefix .= $singlePrefix . '\\';
+            }
+            else
+            {
+                $nsPrefix .= Str::title($singlePrefix) . '\\';
+            }
         }
 
         if (!empty($nsPrefix)) {
@@ -369,7 +384,15 @@ class GeneratorConfig
         $pathPrefix = '';
 
         foreach ($this->prefixes['path'] as $singlePrefix) {
-            $pathPrefix .= Str::title($singlePrefix).'/';
+            
+            if($this->getOption('prefix_mixed_case'))
+            {
+                $pathPrefix .= $singlePrefix.'/';
+            }
+            else
+            {
+                $pathPrefix .= Str::title($singlePrefix).'/';
+            }
         }
 
         if (!empty($pathPrefix)) {
@@ -393,7 +416,15 @@ class GeneratorConfig
         $publicPrefix = '';
 
         foreach ($this->prefixes['public'] as $singlePrefix) {
-            $publicPrefix .= Str::camel($singlePrefix).'/';
+
+            if($this->getOption('prefix_mixed_case'))
+            {
+                $publicPrefix .= $singlePrefix.'/';
+            }
+            else
+            {
+                $publicPrefix .= Str::camel($singlePrefix).'/';
+            }
         }
 
         if (!empty($publicPrefix)) {
