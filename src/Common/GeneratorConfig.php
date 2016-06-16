@@ -71,8 +71,7 @@ class GeneratorConfig
         'paginate',
         'skip',
         'datatables',
-        'views',
-        'prefix_mixed_case'
+        'views'
     ];
 
     public $tableName;
@@ -102,12 +101,13 @@ class GeneratorConfig
         }
 
         /**
-         * passing in prefix_mixed_case overrides formatting of $prefix 
-         * with the prefix_mixed_case value. Useful if you want your prefiv to be
-         * admin_cms but you dont like AdminCms
+         * passing in skip:format_prefixes overrides formatting of $prefix.
+         * Useful if you want your prefiv to be
+         * AdminCMS but you dont like AdminCms
          */
-        if($this->getOption('prefix_mixed_case')) {
-            $prefix = '\\'.$this->getOption('prefix_mixed_case');
+        $prefix = '';
+        if($this->isSkip('format_prefixes')){
+            $prefix = '\\'.$this->getOption('prefix');
         }
         elseif (!empty($this->getOption('prefix'))) {
             $prefix = '\\'.Str::title($this->getOption('prefix'));
@@ -346,7 +346,7 @@ class GeneratorConfig
 
         foreach ($this->prefixes['route'] as $singlePrefix) {
             
-            if($this->getOption('prefix_mixed_case'))
+            if($this->isSkip('format_prefixes'))
             {
                 $routePrefix .= $singlePrefix.'.';
             }
@@ -365,7 +365,7 @@ class GeneratorConfig
         $nsPrefix = '';
 
         foreach ($this->prefixes['path'] as $singlePrefix) {
-            if($this->getOption('prefix_mixed_case'))
+            if($this->isSkip('format_prefixes'))
             {
                 $nsPrefix .= $singlePrefix . '\\';
             }
@@ -385,7 +385,7 @@ class GeneratorConfig
 
         foreach ($this->prefixes['path'] as $singlePrefix) {
             
-            if($this->getOption('prefix_mixed_case'))
+            if($this->isSkip('format_prefixes'))
             {
                 $pathPrefix .= $singlePrefix.'/';
             }
@@ -404,7 +404,7 @@ class GeneratorConfig
         $viewPrefix = '';
 
         foreach ($this->prefixes['view'] as $singlePrefix) {
-            if($this->getOption('prefix_mixed_case'))
+            if($this->isSkip('format_prefixes'))
             {
                 $viewPrefix .= Str::camel($singlePrefix).'/';
             }
@@ -423,8 +423,7 @@ class GeneratorConfig
         $publicPrefix = '';
 
         foreach ($this->prefixes['public'] as $singlePrefix) {
-
-            if($this->getOption('prefix_mixed_case'))
+            if($this->isSkip('format_prefixes'))
             {
                 $publicPrefix .= $singlePrefix.'/';
             }
@@ -490,5 +489,10 @@ class GeneratorConfig
         $this->addOns['datatables'] = config('infyom.laravel_generator.add_on.datatables', false);
         $this->addOns['menu.enabled'] = config('infyom.laravel_generator.add_on.menu.enabled', false);
         $this->addOns['menu.menu_file'] = config('infyom.laravel_generator.add_on.menu.menu_file', 'layouts.menu');
+    }
+    
+    public function isSkip($skip)
+    {
+        return in_array($skip, $this->options['skip']);
     }
 }
