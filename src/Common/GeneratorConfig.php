@@ -404,7 +404,14 @@ class GeneratorConfig
         $viewPrefix = '';
 
         foreach ($this->prefixes['view'] as $singlePrefix) {
-            $viewPrefix .= Str::camel($singlePrefix).'/';
+            if($this->getOption('prefix_mixed_case'))
+            {
+                $viewPrefix .= Str::camel($singlePrefix).'/';
+            }
+            else                
+            {
+                $viewPrefix .= Str::camel($singlePrefix).'/';
+            }
         }
 
         if (!empty($viewPrefix)) {
