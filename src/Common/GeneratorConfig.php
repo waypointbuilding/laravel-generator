@@ -173,7 +173,7 @@ class GeneratorConfig
         $this->pathApiRequest = config(
             'infyom.laravel_generator.path.api_request',
             app_path('Http/Requests/API/')
-        ).$prefixTitle;
+        ).$prefix;
 
         $this->pathApiRoutes = config('infyom.laravel_generator.path.api_routes', app_path('Http/api_routes.php'));
 
