@@ -13,8 +13,7 @@ class Create$TABLE_NAME$Table extends Migration
      */
     public function up()
     {
-        Schema::create('$TABLE_NAME$', function(Blueprint $table)
-        {
+        Schema::create('$TABLE_NAME$', function(Blueprint $table) {
             $FIELDS$
         });
     }

@@ -71,7 +71,7 @@ class GeneratorConfig
         'paginate',
         'skip',
         'datatables',
-        'views'
+        'views',
     ];
 
     public $tableName;
@@ -499,10 +499,5 @@ class GeneratorConfig
         $this->addOns['datatables'] = config('infyom.laravel_generator.add_on.datatables', false);
         $this->addOns['menu.enabled'] = config('infyom.laravel_generator.add_on.menu.enabled', false);
         $this->addOns['menu.menu_file'] = config('infyom.laravel_generator.add_on.menu.menu_file', 'layouts.menu');
-    }
-    
-    public function isSkip($skip)
-    {
-        return in_array($skip, $this->options['skip']);
     }
 }

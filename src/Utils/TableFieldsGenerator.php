@@ -25,7 +25,6 @@ class TableFieldsGenerator
 
         $columns = $schema->listTableColumns($tableName);
 
-
         $primaryKey = static::getPrimaryKeyFromTable($tableName);
         $timestamps = static::getTimestampFieldNames();
         $defaultSearchable = config('infyom.laravel_generator.options.tables_searchable_default', false);
