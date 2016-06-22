@@ -250,7 +250,7 @@ class ModelGenerator extends BaseGenerator
                 $rule = "'".$field['fieldName']."' => '".$this->commandData->inputFields[$i]['validations']."'";
                 $rules[] = $rule;
             } elseif (preg_match("/string,(\d*)$/", $field['databaseInputs'], $gleaned)) {
-                $this->commandData->inputFields[$i]['validations'] = 'sometimes|string|max:'.$gleaned[1];
+                $this->commandData->inputFields[$i]['validations'] = 'sometimes|max:'.$gleaned[1];
                 $rule = "'".$field['fieldName']."' => '".$this->commandData->inputFields[$i]['validations']."'";
                 $rules[] = $rule;
             }
