@@ -71,7 +71,7 @@ class GeneratorConfig
         'paginate',
         'skip',
         'datatables',
-        'views',
+        'views'
     ];
 
     public $tableName;
