@@ -104,7 +104,7 @@ class CommandData
             $this->getInputFromConsole();
         }
     }
-    
+
     private function getInputFromConsole()
     {
         $this->commandInfo('Specify fields for the model (skip id & timestamp fields, we will add it automatically)');

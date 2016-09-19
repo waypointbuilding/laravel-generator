@@ -113,7 +113,7 @@ class ModelGenerator extends BaseGenerator
         $templateData = str_replace(
             '$ELOQUENTFUNCTIONS$', implode(PHP_EOL.PHP_EOL.str_repeat(' ', 8), $this->generateEloquent()), $templateData
         );
-        
+
         $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
 
         return $templateData;
@@ -214,6 +214,11 @@ class ModelGenerator extends BaseGenerator
         return $requiredFields;
     }
 
+    /**
+     * Generate basic Eloquent rules.
+     *
+     * @return array
+     */
     private function generateRules()
     {
         $rules = [];
@@ -222,6 +227,9 @@ class ModelGenerator extends BaseGenerator
             if (!empty($field['validations'])) {
                 $rule = "'".$field['fieldName']."' => '".$field['validations']."'";
                 $rules[] = $rule;
+            }
+            elseif ($this->isSkip('generate_eloquent_rules')) {
+                continue;
             }
             elseif($field['fieldType'] == 'integer' && preg_match("/^(.*)_id$/", $field['fieldName'], $gleaned))
             {
@@ -243,7 +251,7 @@ class ModelGenerator extends BaseGenerator
             }
             elseif($field['fieldType'] == 'text')
             {
-                $this->commandData->inputFields[$i]['validations'] = "sometimes|max:65,535";
+                $this->commandData->inputFields[$i]['validations'] = "sometimes";
                 $rule = "'".$field['fieldName']."' => '".$this->commandData->inputFields[$i]['validations']."'";
                 $rules[] = $rule;
             }
@@ -255,7 +263,7 @@ class ModelGenerator extends BaseGenerator
             }
             elseif(preg_match("/string,(\d*)$/", $field['databaseInputs'], $gleaned))
             {
-                $this->commandData->inputFields[$i]['validations'] = "sometimes|string|max:".$gleaned[1];
+                $this->commandData->inputFields[$i]['validations'] = 'sometimes|max:'.$gleaned[1];
                 $rule = "'".$field['fieldName']."' => '".$this->commandData->inputFields[$i]['validations']."'";
                 $rules[] = $rule;
             }
@@ -849,5 +857,14 @@ class ModelGenerator extends BaseGenerator
         $modelName = lcfirst($modelName);
 
         return str_plural($modelName);
+    }
+
+    /**
+     * @param string $skip
+     * @return bool
+     */
+    public function isSkip($skip)
+    {
+        return in_array($skip, $this->commandData->getOption('skip'));
     }
 }

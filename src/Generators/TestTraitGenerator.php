@@ -57,7 +57,7 @@ class TestTraitGenerator extends BaseGenerator
 
             $fieldData = "'".$field['fieldName']."' => ".'$fake->';
 
-            switch (strtolower($field['fieldType'])) {
+            switch ($field['fieldType']) {
                 case 'integer':
                 case 'float':
                     $fakerData = 'randomDigitNotNull';
