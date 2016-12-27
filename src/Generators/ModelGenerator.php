@@ -257,7 +257,7 @@ class ModelGenerator extends BaseGenerator
             }
             elseif($field['fieldType'] == 'dateTime' || $field['fieldType'] == 'date')
             {
-                $this->commandData->inputFields[$i]['validations'] = "sometimes|date";
+                $this->commandData->inputFields[$i]['validations'] = "sometimes";
                 $rule = "'".$field['fieldName']."' => '".$this->commandData->inputFields[$i]['validations']."'";
                 $rules[] = $rule;
             }
