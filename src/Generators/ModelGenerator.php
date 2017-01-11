@@ -257,7 +257,7 @@ class ModelGenerator extends BaseGenerator
             }
             elseif($field['fieldType'] == 'dateTime' || $field['fieldType'] == 'date')
             {
-                $this->commandData->inputFields[$i]['validations'] = "sometimes|date";
+                $this->commandData->inputFields[$i]['validations'] = "sometimes";
                 $rule = "'".$field['fieldName']."' => '".$this->commandData->inputFields[$i]['validations']."'";
                 $rules[] = $rule;
             }
@@ -454,9 +454,15 @@ class ModelGenerator extends BaseGenerator
     private function generateHasOneFunctions($rulesContainerArr = [])
     {
         $functionArr = [];
+        $dupChecker = [];
         foreach ($rulesContainerArr as $rulesContainerRule) {
             $hasOneModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
             $hasOneFunctionName = $this->getPluralFunctionName($hasOneModel);
+            if(in_array($hasOneFunctionName, $dupChecker))
+            {
+                continue;
+            }
+            $dupChecker[] = $hasOneFunctionName;
             $templateData = TemplateUtil::getTemplate('models.hasOne', 'laravel-generator');
 
             $templateData = str_replace('$FUNCTIONNAME$', $hasOneFunctionName, $templateData);
@@ -523,9 +529,15 @@ class ModelGenerator extends BaseGenerator
     private function generateHasManyFunctions($rulesContainerArr = [])
     {
         $functionArr = [];
+        $dupChecker = [];
         foreach ($rulesContainerArr as $rulesContainerRule) {
             $hasManyModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
             $hasManyFunctionName = $this->getPluralFunctionName($hasManyModel);
+            if(in_array($hasManyFunctionName, $dupChecker))
+            {
+                continue;
+            }
+            $dupChecker[] = $hasManyFunctionName;
             $templateData = TemplateUtil::getTemplate('models.hasMany', 'laravel-generator');
 
             $templateData = str_replace('$FUNCTIONNAME$', $hasManyFunctionName, $templateData);
@@ -590,9 +602,15 @@ class ModelGenerator extends BaseGenerator
     private function generateBelongsToFunctions($rulesContainerArr = [])
     {
         $functionArr = [];
+        $dupChecker = [];
         foreach ($rulesContainerArr as $rulesContainerRule) {
             $belongsToModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
             $belongsToFunctionName = $this->getSingularFunctionName($belongsToModel);
+            if(in_array($belongsToFunctionName, $dupChecker))
+            {
+                continue;
+            }
+            $dupChecker[] = $belongsToFunctionName;
             $templateData = TemplateUtil::getTemplate('models.belongsTo', 'laravel-generator');
 
             $templateData = str_replace('$FUNCTIONNAME$', $belongsToFunctionName, $templateData);
@@ -618,9 +636,15 @@ class ModelGenerator extends BaseGenerator
     private function generateBelongsToManyFunctions($rulesContainerArr = [])
     {
         $functionArr = [];
+        $dupChecker = [];
         foreach ($rulesContainerArr as $rulesContainerRule) {
             $belongsToManyModel = $this->generateModelNameFromTableName($rulesContainerRule[0]);
             $belongsToManyFunctionName = $this->getPluralFunctionName($belongsToManyModel);
+            if(in_array($belongsToManyFunctionName, $dupChecker))
+            {
+                continue;
+            }
+            $dupChecker[] = $belongsToManyFunctionName;
             $templateData = TemplateUtil::getTemplate('models.belongsToMany', 'laravel-generator');
 
             $templateData = str_replace('$FUNCTIONNAME$', $belongsToManyFunctionName, $templateData);
