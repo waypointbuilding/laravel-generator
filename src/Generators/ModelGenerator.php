@@ -116,6 +116,43 @@ class ModelGenerator extends BaseGenerator
 
         $templateData = str_replace('$GENERATEDAT$', date('F j, Y, g:i a T'), $templateData);
 
+        $hasMany       = array_map(
+            function ($val)
+            {
+                return '"'.lcfirst($this->generateModelNameFromTableName($val[0])).'"';
+            }, $this->eloquentRules[$this->table]['hasMany']
+        );
+        $templateData  = str_replace(
+            '$HASMANY$', $hasMany ? implode(','.PHP_EOL.str_repeat(' ', 8), $hasMany) : '', $templateData
+        );
+        $hasOne        = array_map(
+            function ($val)
+            {
+                return '"'.lcfirst($this->generateModelNameFromTableName($val[0])).'"';
+            }, $this->eloquentRules[$this->table]['hasOne']
+        );
+        $templateData  = str_replace(
+            '$HASONE$', $hasOne ? implode(','.PHP_EOL.str_repeat(' ', 8), $hasOne) : '', $templateData
+        );
+        $belongsTo     = array_map(
+            function ($val)
+            {
+                return '"'.lcfirst($this->generateModelNameFromTableName($val[0])).'"';
+            }, $this->eloquentRules[$this->table]['belongsTo']
+        );
+        $templateData  = str_replace(
+            '$BELONGSTO$', $belongsTo ?  implode(','.PHP_EOL.str_repeat(' ', 8), $belongsTo) : '', $templateData
+        );
+        $belongsToMany = array_map(
+            function ($val)
+            {
+                return '"'.lcfirst($this->generateModelNameFromTableName($val[0])).'"';
+            }, $this->eloquentRules[$this->table]['belongsToMany']
+        );
+        $templateData  = str_replace(
+            '$BELONGSTOMANY$', $belongsToMany ?  implode(','.PHP_EOL.str_repeat(' ', 8), $belongsToMany)  : '', $templateData
+        );
+
         return $templateData;
     }
 
