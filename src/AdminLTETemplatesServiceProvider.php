@@ -1,6 +1,6 @@
 <?php
 
-namespace InfyOm\AdminLTETemplates;
+namespace InfyOm\Generator;
 
 use Illuminate\Support\ServiceProvider;
 
