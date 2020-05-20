@@ -47,7 +47,14 @@ class ControllerGenerator extends BaseGenerator
             }
         }
 
+        foreach ($this->commandData->inputFields as $field) {
+            if (!$field['inIndex']) {
+                continue;
+            }
+            $relations[] = $field['relation'];
+        }
         $templateData = TemplateUtil::fillTemplate($this->commandData->dynamicVars, $templateData);
+        $templateData = str_replace('$RELATIONS$', json_encode(array_values(array_filter($relations))), $templateData);
 
         FileUtil::createFile($this->path, $this->fileName, $templateData);
 
@@ -75,6 +82,7 @@ class ControllerGenerator extends BaseGenerator
                 $headerFieldTemplate,
                 $field
             );
+            $relations[] = $field['relation'];
         }
 
         $path = $this->commandData->config->pathDataTables;
@@ -84,6 +92,7 @@ class ControllerGenerator extends BaseGenerator
         $fields = implode(','.infy_nl_tab(1, 3), $headerFields);
 
         $templateData = str_replace('$DATATABLE_COLUMNS$', $fields, $templateData);
+        $templateData = str_replace('$RELATIONS$', json_encode(array_values(array_filter($relations))), $templateData);
 
         FileUtil::createFile($path, $fileName, $templateData);
 

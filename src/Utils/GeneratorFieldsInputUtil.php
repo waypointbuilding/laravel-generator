@@ -22,6 +22,12 @@ class GeneratorFieldsInputUtil
                 $htmlType = 'text';
             }
 
+            if (isset($field['relation'])) {
+                $relation = $field['relation'];
+            } else {
+                $relation = null;
+            }
+
             if (isset($field['validations'])) {
                 $validations = $field['validations'];
             } else {
@@ -70,7 +76,7 @@ class GeneratorFieldsInputUtil
                 'inIndex'    => $inIndex,
             ];
 
-            $fieldsArr[] = self::processFieldInput($field['fieldInput'], $htmlType, $validations, $fieldSettings);
+            $fieldsArr[] = self::processFieldInput($field['fieldInput'], $htmlType, $validations, $fieldSettings, $relation);
         }
 
         return $fieldsArr;
@@ -87,13 +93,16 @@ class GeneratorFieldsInputUtil
         return true;
     }
 
-    public static function processFieldInput($fieldInput, $htmlType, $validations, $fieldSettings = [])
+    public static function processFieldInput($fieldInput, $htmlType, $validations, $fieldSettings = [], $relation = null)
     {
         $fieldInputs = explode(':', $fieldInput);
-
         $fieldName = array_shift($fieldInputs);
+
         $databaseInputs = implode(':', $fieldInputs);
         $fieldType = explode(',', $fieldInputs[0])[0];
+        
+        $relationInput = GeneratorFieldRelation::parseRelation($relation);
+        $relationShipText = (!empty($relationInput->inputs)) ? camel_case($relationInput->inputs[0]) : null;
 
         $htmlTypeInputs = explode(':', $htmlType);
         $htmlType = array_shift($htmlTypeInputs);
@@ -110,6 +119,7 @@ class GeneratorFieldsInputUtil
             'databaseInputs' => $databaseInputs,
             'htmlType'       => $htmlType,
             'htmlTypeInputs' => $htmlTypeInputs,
+            'relation'       => $relationShipText,
             'validations'    => $validations,
             'searchable'     => isset($fieldSettings['searchable']) ? $fieldSettings['searchable'] : false,
             'fillable'       => isset($fieldSettings['fillable']) ? $fieldSettings['fillable'] : true,
