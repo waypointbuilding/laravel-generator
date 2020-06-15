@@ -205,7 +205,7 @@ class GeneratorConfig
         $this->pathViews = config(
             'infyom.laravel_generator.path.views',
             base_path('resources/views/')
-        ).$viewPrefix.$this->mCamelPlural.'/';
+        ).$this->mSnakePlural.'/';
         
         $this->pathRequestNameSuffix = config('infyom.laravel_generator.path.request_name_suffix', 'Request');
         
